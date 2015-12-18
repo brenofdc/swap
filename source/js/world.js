@@ -1,4 +1,11 @@
 var world = function() {
+	var dialogues = {
+		welcome: "Welcome to Swap",
+		finished: "That's all folks",
+		won: "You won!",
+		died: "You died!",
+		reset: "Level Reset!"
+	};
 	var aiEntities = [];
 	var floor = [];
 	var gridSize;
@@ -15,7 +22,7 @@ var world = function() {
 	var init = function(level, canvasId, hudId, tipId) {
 		renderer.init(canvasId, hudId, tipId);
 		initLevel(level);
-		createDialogue("Welcome to Swap");
+		createDialogue(dialogues.welcome);
 		prevTime = Date.now();
 	}
 
@@ -28,7 +35,7 @@ var world = function() {
 		curLevel = level;
 		if(level==levels.length) {
 			// alert("That's all folks!");
-			createDialogue("That's all folks");
+			createDialogue(dialogues.finished);
 			return;
 		}
 
@@ -38,7 +45,7 @@ var world = function() {
 		player.init(gridSize);
 		input.gameMode();
 		input.reset();
-				
+
 		loadLevel(level);
 		renderer.renderText(deaths, curLevel, levels[curLevel].tip);
 
@@ -49,7 +56,7 @@ var world = function() {
 	var victory = function() {
 		if(!hasWon) {
 			// alert("You win!");
-			createDialogue("You won!");
+			createDialogue(dialogues.won);
 			// initLevel(curLevel+1);
 			curLevel++;
 		}
@@ -58,10 +65,10 @@ var world = function() {
 
 	var death = function() {
 		// alert("You died! :O");
-		createDialogue("You died!");
+		createDialogue(dialogues.died);
 		clearInterval(intervalId);
-		if(!hasDied) 
-			deaths++; 
+		if(!hasDied)
+			deaths++;
 		hasDied = true;
 		renderer.renderText(deaths, curLevel, levels[curLevel].tip);
 		// initLevel(curLevel);
@@ -79,7 +86,7 @@ var world = function() {
 					floor[y].push(getTile(x*gridSize, y*gridSize, currentLevel.tiles[y][x]));
 				}
 				else {
-					floor[y].push(getTile(0));	
+					floor[y].push(getTile(0));
 					if(x==currentLevel.startX && y==currentLevel.startY)
 						player.setAI(getAI(x*gridSize+gridSize/2, y*gridSize+gridSize/2, currentLevel.tiles[y][x]));
 					else {
@@ -100,7 +107,7 @@ var world = function() {
 			input.dialogueMode();
 			renderer.showDialogue(dialogue);
 		}
-	}	
+	}
 
 	var update = function() {
 		for(var y=0; y<floor.length; y++) {
@@ -142,7 +149,7 @@ var world = function() {
 		addToArray(touching.tiles, floor[coordToGrid(x, y+gridSize-10).y][coordToGrid(x, y+gridSize-10).x]);
 		addToArray(touching.tiles, floor[coordToGrid(x+gridSize-10, y+gridSize-10).y][coordToGrid(x+gridSize-10, y+gridSize-10).x]);
 		return touching;
-	}	
+	}
 
 	var coordToGrid = function(x, y) {
 		var grid = {};
@@ -152,12 +159,12 @@ var world = function() {
 	}
 
 	var addToArray = function(array, obj) {
-		if(array.indexOf(obj)==-1) 
+		if(array.indexOf(obj)==-1)
 			array.push(obj);
 	}
 
 	var cyclePlayer = function() {
-		aiEntities.push(player.getAI());		
+		aiEntities.push(player.getAI());
 		player.setAI(aiEntities.shift());
 	}
 
@@ -173,7 +180,7 @@ var world = function() {
 	}
 
 	var resetLevel = function() {
-		createDialogue("Level Reset!");
+		createDialogue(dialogues.reset);
 		initLevel(curLevel);
 	}
 
