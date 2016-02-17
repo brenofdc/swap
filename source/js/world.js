@@ -144,10 +144,19 @@ var world = function() {
 		}
 		var x = (ai.x - gridSize/2) + 5;
 		var y = (ai.y - gridSize/2) + 5;
-		addToArray(touching.tiles, floor[coordToGrid(x, y).y][coordToGrid(x, y).x]);
-		addToArray(touching.tiles, floor[coordToGrid(x+gridSize-10, y).y][coordToGrid(x+gridSize-10, y).x]);
-		addToArray(touching.tiles, floor[coordToGrid(x, y+gridSize-10).y][coordToGrid(x, y+gridSize-10).x]);
-		addToArray(touching.tiles, floor[coordToGrid(x+gridSize-10, y+gridSize-10).y][coordToGrid(x+gridSize-10, y+gridSize-10).x]);
+		var time = new Date().getTime();
+		var touchInterval = 10, xInterval, yInterval;
+		for (var coordX = 0; coordX <= 1; coordX++){
+			for (var coordY = 0; coordY <= 1; coordY++){
+				xInterval = (gridSize-touchInterval) * coordX;
+				yInterval = (gridSize-touchInterval) * coordY;
+				addToArray(touching.tiles, floor[coordToGrid(x + xInterval, y + yInterval).y][coordToGrid(x + xInterval, y + yInterval).x]);
+			}
+		}
+		// addToArray(touching.tiles, floor[coordToGrid(x, y).y][coordToGrid(x, y).x]);
+		// addToArray(touching.tiles, floor[coordToGrid(x+gridSize-10, y).y][coordToGrid(x+gridSize-10, y).x]);
+		// addToArray(touching.tiles, floor[coordToGrid(x, y+gridSize-10).y][coordToGrid(x, y+gridSize-10).x]);
+		// addToArray(touching.tiles, floor[coordToGrid(x+gridSize-10, y+gridSize-10).y][coordToGrid(x+gridSize-10, y+gridSize-10).x]);
 		return touching;
 	}
 
